@@ -3,6 +3,8 @@ class Page < ApplicationRecord
   validates :long_url, format: URI::regexp(%w[http https])
   validates_uniqueness_of :short_url
 
+  belongs_to :user
+
   def short
     Rails.application.routes.url_helpers.short_url(short_url: self.short_url)
   end

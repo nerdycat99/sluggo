@@ -1,1 +1,10 @@
-<h1>This will be the index</h1>
+<h1>Welcome to Sluggo</h1>
+<br />
+<% if user_signed_in? %>
+  <h2>Hello <%= current_user.email %></h2>
+  <h2><%= link_to 'view my links', user_pages_path(current_user), class: 'nav-link' %></h2>
+  <h2><%= link_to 'logout', destroy_user_session_path, method: :delete, class: 'nav-link' %></h2>
+<% else %>
+  <h2><%= link_to 'login', new_user_session_path, class: 'nav-link' %></h2>
+  <h2><%= link_to 'register', new_user_registration_path, class: 'nav-link' %></h2>
+<% end %>
