@@ -6,7 +6,7 @@ Rails.application.routes.draw do
   root 'static_pages#index'
 
   resources :users do
-    resources :pages, only: :index
+    resources :pages, only: [:index, :create, :new]
   end
 
 end

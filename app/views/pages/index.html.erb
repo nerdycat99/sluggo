@@ -1,2 +1,17 @@
 <h1>List of all your links</h1>
-<%= @pages.inspect %>
+<table style="width:100%">
+  <tr style="text-align:left">
+    <th>long url</th>
+    <th>short url</th>
+    <th>counter</th>
+  </tr>
+<% @pages.each do |page| %>
+  <tr>
+    <td><%= page.long_url %></td>
+    <td><%= page.short %></td>
+    <td><%= page.counter %></td>
+  </tr>
+<% end %>
+</table>
+<br />
+<h2><%= link_to 'create a new link', new_user_page_path(current_user), class: 'nav-link' %></h2>

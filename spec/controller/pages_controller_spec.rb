@@ -73,4 +73,23 @@ RSpec.describe PagesController, type: :request do
       }.to raise_error(ActionController::RoutingError)
     end
   end
+
+  describe 'POST /users/:user_id/pages' do
+
+    before :each do
+      login_as current_user
+    end
+
+    it 'should save the new url if it is valid' do
+      expect { 
+        current_user.pages.create(long_url: "http://www.this-is-a-valid-address.com")
+      }.to change { Page.all.count }.from(0).to(1)
+    end
+
+    it 'should not save the new url if it si invalid' do
+      current_user.pages.create(long_url: "this is not a valid url")
+      expect(Page.all.count).to eq(0)
+    end
+
+  end
 end

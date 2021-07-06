@@ -12,9 +12,27 @@ class PagesController < ApplicationController
     redirect_to @page.long_url
   end
 
+  def new
+    @page = Page.new
+  end
+
+  def create
+    @page = current_user.pages.create(page_params)
+    if @page.persisted?
+      redirect_to user_pages_path(current_user)
+    else
+      flash.now[:alert] = "Invalid url, please try again"
+      render :new
+    end
+  end
+
   private
 
   def not_found
     raise ActionController::RoutingError.new('Not Found')
+  end
+
+  def page_params
+    params.require(:page).permit(:long_url)
   end
 end

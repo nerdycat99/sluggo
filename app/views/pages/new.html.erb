@@ -1,0 +1,9 @@
+<h1>Create a new link</h1>
+<div class="col-12">
+  <%= form_for @page, url: user_pages_path do |f| %>
+    <%= f.label :long_url, "enter the url you want to create a short link for", class: "input-label" %><br/>
+    <%= f.text_area :long_url, autofocus: true, autocomplete: "off", style: "width:100%;", class: "field input-text", placeholder: "full url" %>
+    <br />
+    <%= f.submit 'create', class: 'btn btn-primary', style: "width:100%;" %>
+  <% end %>
+</div>
