@@ -5,13 +5,13 @@ RSpec.describe PagesController, type: :request do
   let(:current_user) { create(:user) }
   let(:pages) { create(:page, user: current_user) }
 
-  before :each do
-    login_as current_user
-  end
-
   describe 'GET /users/:user_id/pages' do
 
     context 'when the user that created the page link is the current user' do
+
+      before :each do
+        login_as current_user
+      end
 
       it 'should return a success response' do      
         get "/users/#{current_user.id}/pages"
@@ -43,6 +43,34 @@ RSpec.describe PagesController, type: :request do
         get "/users/#{another_user.id}/pages"
         expect(response.body).to match("https://www.another-users-long-link")
       end
+    end
+
+    context 'when no user is logged in' do
+      it 'redirects the user to sign in' do
+        get "/users/1234567/pages"
+        expect(response).to redirect_to("/users/sign_in")
+      end
+    end
+  end
+
+  describe 'GET /s/:short_url' do
+    let(:page) { create(:page, user: current_user) }
+
+    it 'should redirect the user to the full url when the short url is used' do
+      get "/s/#{page.short_url}"
+      expect(response).to redirect_to(page.long_url)
+    end
+
+    it 'should increase the counter for the page when short url is used' do
+      expect{
+        get "/s/#{page.short_url}"
+      }.to change{page.reload.counter}.by(1)
+    end
+
+    it 'should render a 404 if a non existent short url is provided' do
+      expect {
+        get "/s/not-a-shorty"
+      }.to raise_error(ActionController::RoutingError)
     end
   end
 end

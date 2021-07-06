@@ -16,5 +16,4 @@ FactoryBot.define do
       long_url { 'https://www.another-users-long-link' }
     end
   end
-
 end
